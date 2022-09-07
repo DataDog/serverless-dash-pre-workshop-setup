@@ -1,0 +1,40 @@
+service: dash-2022-workshop
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+  environment:
+    TABLE_NAME: ${self:custom.tableName}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: "dynamodb:PutItem"
+          Resource: "*"
+
+functions:
+  create-github-app:
+    handler: create-github-app.handler
+    events:
+      - http:
+          path: /new
+          method: any
+    memorySize: 1024
+
+custom:
+  tableName: serverless_dash_workshop
+
+resources:
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: uuid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: uuid
+            KeyType: HASH
