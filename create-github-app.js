@@ -23,7 +23,7 @@ exports.handler = async (event) => {
         return {
             statusCode: 301,
             headers: {
-                Location: 'https://datadoghq.dev/serverless-dash-2022-create-github-app/success.html',
+                Location: 'https://datadoghq.dev/serverless-dash-create-github-app/success.html',
             }
         }
     } catch(e) {
